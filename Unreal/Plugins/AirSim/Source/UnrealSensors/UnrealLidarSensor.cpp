@@ -45,14 +45,13 @@ void UnrealLidarSensor::getPointCloud(const msr::airlib::Pose& lidar_pose, const
 {
     point_cloud.clear();
     segmentation_cloud.clear();
-
     msr::airlib::LidarSimpleParams params = getParams();
     const auto number_of_lasers = params.number_of_channels;
 
     // cap the points to scan via ray-tracing; this is currently needed for car/Unreal tick scenarios
     // since SensorBase mechanism uses the elapsed clock time instead of the tick delta-time.
-    constexpr float MAX_POINTS_IN_SCAN = 1e+5f;
-    uint32 total_points_to_scan = FMath::RoundHalfFromZero(params.points_per_second * delta_time);
+    constexpr float MAX_POINTS_IN_SCAN = 5e+6f;
+    uint32 total_points_to_scan = FMath::RoundHalfFromZero(params.points_per_second * 1.0);
     if (total_points_to_scan > MAX_POINTS_IN_SCAN) {
         total_points_to_scan = MAX_POINTS_IN_SCAN;
         UAirBlueprintLib::LogMessageString("Lidar: ", "Capping number of points to scan", LogDebugLevel::Failure);
@@ -66,7 +65,7 @@ void UnrealLidarSensor::getPointCloud(const msr::airlib::Pose& lidar_pose, const
     }
 
     // calculate needed angle/distance between each point
-    const float angle_distance_of_tick = params.horizontal_rotation_frequency * 360.0f * delta_time;
+    const float angle_distance_of_tick = params.horizontal_rotation_frequency * 360.0f * 1.0;
     const float angle_distance_of_laser_measure = angle_distance_of_tick / points_to_scan_with_one_laser;
 
     // normalize FOV start/end

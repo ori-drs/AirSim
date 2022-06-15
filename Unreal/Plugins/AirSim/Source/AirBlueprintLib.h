@@ -23,6 +23,7 @@
 #include "Runtime/Core/Public/HAL/FileManager.h"
 #include "common/AirSimSettings.hpp"
 #include <string>
+#include <fstream>
 #include <regex>
 #include "AirBlueprintLib.generated.h"
 
@@ -195,7 +196,7 @@ public:
 
 private:
     template <typename T>
-    static void InitializeObjectStencilID(T* mesh, bool override_existing = true)
+    static void InitializeObjectStencilID(T* mesh, std::ofstream& object_ids_file, bool override_existing = true)
     {
         SetRenderCustomDepth(mesh, true);
 
@@ -219,6 +220,7 @@ private:
         }
 
         SetObjectStencilID(mesh, hash % 256);
+        object_ids_file << mesh_name << " " << hash % 256 << "\n";
     }
 
     template <typename T>

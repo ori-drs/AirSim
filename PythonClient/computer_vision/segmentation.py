@@ -5,6 +5,7 @@ import airsim
 import cv2
 import numpy as np
 import setup_path 
+import os
 
 client = airsim.VehicleClient()
 client.confirmConnection()
@@ -39,11 +40,11 @@ print("Done: %r" % (found))
 responses = client.simGetImages([
     airsim.ImageRequest("0", airsim.ImageType.Segmentation, True), #depth in perspective projection
     airsim.ImageRequest("0", airsim.ImageType.Segmentation, False, False)])  #scene vision image in uncompressed RGBA array
-print('Retrieved images: %d', len(responses))
+print('Retrieved images: ', len(responses))
 
 #save segmentation images in various formats
 for idx, response in enumerate(responses):
-    filename = 'c:/temp/py_seg_' + str(idx)
+    filename = '/home/lintong/Desktop/airsim_lidar/' + str(idx)
 
     if response.pixels_as_float:
         print("Type %d, size %d" % (response.image_type, len(response.image_data_float)))
@@ -55,7 +56,7 @@ for idx, response in enumerate(responses):
         print("Type %d, size %d" % (response.image_type, len(response.image_data_uint8)))
         img1d = np.fromstring(response.image_data_uint8, dtype=np.uint8) #get numpy array
         img_rgb = img1d.reshape(response.height, response.width, 3) #reshape array to 3 channel image array H X W X 3
-        # cv2.imwrite(os.path.normpath(filename + '.png'), img_rgb) # write to png
+        cv2.imwrite(os.path.normpath(filename + '.png'), img_rgb) # write to png
 
         #find unique colors
         print(np.unique(img_rgb[:,:,0], return_counts=True)) #red

@@ -28,6 +28,7 @@
 #include "AssetRegistryModule.h"
 #include "DetectionComponent.h"
 
+
 /*
 //TODO: change naming conventions to same as other files?
 Naming conventions in this file:
@@ -357,19 +358,24 @@ std::string UAirBlueprintLib::GetMeshName(ALandscapeProxy* mesh)
 
 void UAirBlueprintLib::InitializeMeshStencilIDs(bool override_existing)
 {
+    std::ofstream object_id_file;
+    object_id_file.open ("/home/lintong/Documents/AirSim/object_ids.txt");
+    object_id_file << "mesh_name object_id" << "\n";
+    std::cout << "--------------------opened file for object id ----------------------" << "\n";
     for (TObjectIterator<UStaticMeshComponent> comp; comp; ++comp) {
-        InitializeObjectStencilID(*comp, override_existing);
+        InitializeObjectStencilID(*comp, object_id_file, override_existing);
     }
     for (TObjectIterator<USkinnedMeshComponent> comp; comp; ++comp) {
-        InitializeObjectStencilID(*comp, override_existing);
+        InitializeObjectStencilID(*comp, object_id_file, override_existing);
     }
     //for (TObjectIterator<UFoliageType> comp; comp; ++comp)
     //{
     //    InitializeObjectStencilID(*comp);
     //}
     for (TObjectIterator<ALandscapeProxy> comp; comp; ++comp) {
-        InitializeObjectStencilID(*comp, override_existing);
+        InitializeObjectStencilID(*comp, object_id_file, override_existing);
     }
+    object_id_file.close();
 }
 
 bool UAirBlueprintLib::SetMeshStencilID(const std::string& mesh_name, int object_id,
