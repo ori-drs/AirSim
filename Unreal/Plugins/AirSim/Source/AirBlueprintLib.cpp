@@ -42,7 +42,7 @@ msr::airlib::AirSimSettings::SegmentationSetting::MeshNamingMethodType UAirBluep
     msr::airlib::AirSimSettings::SegmentationSetting::MeshNamingMethodType::OwnerName;
 IImageWrapperModule* UAirBlueprintLib::image_wrapper_module_ = nullptr;
 
-int16 UAirBlueprintLib::object_id_counter_ = 1;
+int16 UAirBlueprintLib::object_id_counter_ = 0;
 std::map<std::string, int16> UAirBlueprintLib::object_id_map_ = {};
 
 void UAirBlueprintLib::LogMessageString(const std::string& prefix, const std::string& suffix, LogDebugLevel level, float persist_sec)

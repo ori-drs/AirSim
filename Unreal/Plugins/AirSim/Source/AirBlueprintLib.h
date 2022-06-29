@@ -232,12 +232,12 @@ private:
                 object_id = object_id_counter_;
                 object_id_counter_++;
                 object_id_map_.insert(std::pair<std::string, int16>(trimmed_name, object_id));
+                object_ids_file << trimmed_name << " " << object_id << "\n";
             }
         }else{
-            object_id = 256;
+            object_id = 255;
         }
-        SetObjectStencilID(mesh, object_id % 256); // cap to 256
-        object_ids_file << trimmed_name << " " << object_id << "\n";
+        SetObjectStencilID(mesh, object_id); // cap to 256
     }
 
     template <typename T>
