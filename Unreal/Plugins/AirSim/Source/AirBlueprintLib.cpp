@@ -42,6 +42,9 @@ msr::airlib::AirSimSettings::SegmentationSetting::MeshNamingMethodType UAirBluep
     msr::airlib::AirSimSettings::SegmentationSetting::MeshNamingMethodType::OwnerName;
 IImageWrapperModule* UAirBlueprintLib::image_wrapper_module_ = nullptr;
 
+int16 UAirBlueprintLib::object_id_counter_ = 1;
+std::map<std::string, int16> UAirBlueprintLib::object_id_map_ = {};
+
 void UAirBlueprintLib::LogMessageString(const std::string& prefix, const std::string& suffix, LogDebugLevel level, float persist_sec)
 {
     LogMessage(FString(prefix.c_str()), FString(suffix.c_str()), level, persist_sec);
@@ -169,6 +172,8 @@ void UAirBlueprintLib::enableViewportRendering(AActor* context, bool enable)
 void UAirBlueprintLib::OnBeginPlay()
 {
     image_wrapper_module_ = &FModuleManager::LoadModuleChecked<IImageWrapperModule>(FName("ImageWrapper"));
+    object_id_counter_ = 1;
+    object_id_map_.clear();
 }
 
 void UAirBlueprintLib::OnEndPlay()

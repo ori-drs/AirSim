@@ -210,17 +210,34 @@ private:
             //common_utils::Utils::DebugBreak();
             return;
         }
-        FString name(mesh_name.c_str());
-        int hash = 5;
-        for (int idx = 0; idx < name.Len(); ++idx) {
-            auto char_num = UKismetStringLibrary::GetCharacterAsNumber(name, idx);
-            if (char_num < 97)
-                continue; //numerics and other punctuations
-            hash += char_num;
+
+        std::string name = mesh_name.c_str();
+        std::string trimmed_name = name.substr(0, name.find("_"));
+
+        std::vector<std::string> class_strings = {"ceiling", "floor", "wall", "beam", "column", "window", "door", "chair", "table", "bookcase", "sofa", "board", "clutter"};
+
+        bool true_class = false;
+        for(const auto sub_class : class_strings){
+            if (trimmed_name.find(sub_class) != std::string::npos) {
+                true_class = true;
+            }
         }
 
-        SetObjectStencilID(mesh, hash % 256);
-        object_ids_file << mesh_name << " " << hash % 256 << "\n";
+        int16 object_id;
+        if(true_class){
+            auto search = object_id_map_.find(trimmed_name);
+            if (search != object_id_map_.end()) {
+                object_id = search->second;
+            } else {
+                object_id = object_id_counter_;
+                object_id_counter_++;
+                object_id_map_.insert(std::pair<std::string, int16>(trimmed_name, object_id));
+            }
+        }else{
+            object_id = 256;
+        }
+        SetObjectStencilID(mesh, object_id % 256); // cap to 256
+        object_ids_file << trimmed_name << " " << object_id << "\n";
     }
 
     template <typename T>
@@ -299,4 +316,8 @@ private:
     static msr::airlib::AirSimSettings::SegmentationSetting::MeshNamingMethodType mesh_naming_method_;
 
     static IImageWrapperModule* image_wrapper_module_;
+
+    static int16 object_id_counter_;
+
+    static std::map<std::string, int16> object_id_map_;
 };
