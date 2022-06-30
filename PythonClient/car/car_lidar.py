@@ -103,6 +103,7 @@ class LidarTest:
                     print("\t\tlidar orientation: %s" % (pprint.pformat(lidarData.pose.orientation)))
                     if self.save_pcd: 
                         self.write_lidarData_to_disk(lidarData)
+                    
 
         except AttributeError:
             print('special key pressed: {0}'.format(key))
@@ -179,9 +180,15 @@ class LidarTest:
         pcd.colors = o3d.utility.Vector3dVector(rgb_color)
         save_path = self.save_dir + "/" + str(lidarData.time_stamp) + ".pcd"
         o3d.io.write_point_cloud(save_path, pcd)
-        print("finish writing txt and pcd file to ", save_path)
+        print("saved files")
         txt_save_path = self.save_dir + "/" + str(lidarData.time_stamp) + ".txt"
         np.savetxt(txt_save_path, np.hstack((points, obj_ids.reshape(obj_ids.shape[0],1))), fmt='%1.3f')
+        pose_save_path = self.save_dir + "/" + str(lidarData.time_stamp) + "_pose.txt"
+        pose_vector = np.hstack((lidarData.pose.position.to_numpy_array(), 
+                                lidarData.pose.orientation.to_numpy_array())).reshape(1,-1)
+
+        np.savetxt(pose_save_path, pose_vector, header="x y z qx qy qz qw")
+        print("finish writing txt and pcd file to ", save_path)
 
     def stop(self):
 
