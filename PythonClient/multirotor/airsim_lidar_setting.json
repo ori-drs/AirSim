@@ -1,0 +1,46 @@
+{
+  "SeeDocsAt": "https://github.com/Microsoft/AirSim/blob/master/docs/settings.md",
+  "SettingsVersion": 1.2,
+
+  "SimMode": "Multirotor",
+  "PhysicsEngineName":"ExternalPhysicsEngine",
+
+
+  "SegmentationSettings": {
+    "InitMethod": "",
+    "MeshNamingMethod": "",
+    "OverrideExisting": true
+  },
+
+
+  "Vehicles": { 
+    "Cam1": { 
+      "VehicleType": "SimpleFlight", 
+      "EnableCollisionPassthrogh": true,
+      "EnableCollisions": true,
+      "X":  0, 
+      "Y":  0, 
+      "Z":  0,
+      "Sensors": {
+        "LidarSensor1": {
+          "SensorType": 6,
+          "Enabled" : true,
+          "NumberOfChannels": 128,
+          "Range": 50,
+          "RotationsPerSecond": 1,
+          "PointsPerSecond": 120000,
+          "X": 0, "Y": 0, "Z": -1,
+          "Roll": 0, "Pitch": 0, "Yaw" : 0,
+          "VerticalFOVUpper": 45,
+          "VerticalFOVLower": -45,
+          "HorizontalFOVStart": 0,
+          "HorizontalFOVEnd": 0,
+          "DrawDebugPoints": true,
+          "DataFrame": "SensorLocalFrame"
+        }
+      }
+    }
+
+  } 
+
+}

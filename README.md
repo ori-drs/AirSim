@@ -39,6 +39,15 @@ For more details, see the [use precompiled binaries](docs/use_precompiled.md) do
 
 View our [detailed documentation](https://microsoft.github.io/AirSim/) on all aspects of AirSim.
 
+### DRS simulated lidar
+You can run the python client to drive a drive and capture simulated lidar with PythonClient/multirotor/multirotor_lidar.py
+Ensure to update the setting.json with PythonClient/multirotor/airsim_lidar_setting.json
+
+Note: This will save a pcd file and each object is coloured by object id, also a text file with x, y, z, object ID fields.
+To get instance id, you will need to name each object with unique ID. 
+Once Aimsim is running, it will automatically save object_ids.txt in the Airsim folder, where the json file is. Each entry is mesh_name  and object_id, such as "window3156 38", "chair2683 27".
+
+
 ### Manual drive
 
 If you have remote control (RC) as shown below, you can manually control the drone in the simulator. For cars, you can use arrow keys to drive manually.
